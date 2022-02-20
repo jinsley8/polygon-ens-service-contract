@@ -1,4 +1,4 @@
-# Polygon ENS Service
+# Polygon ENS Service - Smart Contract
 
 Build and deploy an ENS service on the Polygon PoS chain.
 
