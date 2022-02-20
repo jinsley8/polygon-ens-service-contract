@@ -7,7 +7,7 @@ const main = async () => {
   console.log("Contract owner:", owner.address);
 
   // pay more than required
-  let txn = await domainContract.register("a16z",  {value: hre.ethers.utils.parseEther('1234')});
+  let txn = await domainContract.register("a16zz",  {value: hre.ethers.utils.parseEther('1234')});
   await txn.wait();
 
   // How much money is in here?

@@ -24,8 +24,8 @@ contract Domains is ERC721URIStorage {
 
   // mapping data type to store names
   mapping(string => address) public domains;
-  // mapping to store values
   mapping(string => string) public records;
+  mapping (uint => string) public names;
 
   constructor(string memory _tld) payable ERC721("PSHHH Name Service", "PNS") {
     owner = payable(msg.sender);
@@ -46,10 +46,18 @@ contract Domains is ERC721URIStorage {
     }
   }
 
+  // check length of name being registered
+  function valid(string calldata name) public pure returns(bool) {
+    return StringUtils.strlen(name) >= 3 && StringUtils.strlen(name) <= 10;
+  }
+
   // A register function that adds names to our mapping
   function register(string calldata name) public payable {
     // Check that the name is unregistered
     require(domains[name] == address(0));
+
+    // check that name is valid length
+    require(valid(name) == true, "Name must be between 3 and 10 characters");
 
     uint _price = price(name);
 
@@ -97,6 +105,8 @@ contract Domains is ERC721URIStorage {
     _setTokenURI(newRecordId, finalTokenUri);
     domains[name] = msg.sender;
 
+    names[newRecordId] = name;
+
     _tokenIds.increment();
   }
 
@@ -113,6 +123,17 @@ contract Domains is ERC721URIStorage {
 
   function getRecord(string calldata name) public view returns(string memory) {
     return records[name];
+  }
+
+  function getAllNames() public view returns (string[] memory) {
+    console.log("Getting all names from contract");
+    string[] memory allNames = new string[](_tokenIds.current());
+    for (uint i = 0; i < _tokenIds.current(); i++) {
+      allNames[i] = names[i];
+      console.log("Name for token %d is %s", i, allNames[i]);
+    }
+
+    return allNames;
   }
 
   modifier onlyOwner() {
