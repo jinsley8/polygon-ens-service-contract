@@ -8,6 +8,11 @@ import { StringUtils } from "./libraries/StringUtils.sol";
 import { Base64 } from "./libraries/Base64.sol";
 import "hardhat/console.sol";
 
+// custom error messages
+error Unauthorized();
+error AlreadyRegistered();
+error InvalidName(string name);
+
 contract Domains is ERC721URIStorage {
 
   // keep track of tokenIds.
